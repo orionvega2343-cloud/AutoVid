@@ -37,14 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.catalog',
-    'django.contrib.brands',
-    'django.contrib.accounts',
-    'django.contrib.core',
-    'django.contrib.news',
-    'django.contrib.orders',
-    'django.contrib.pages',
-    'django.contrib.search',
+    'catalog.apps.CatalogConfig',
 ]
 
 MIDDLEWARE = [
@@ -126,3 +119,6 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
