@@ -90,3 +90,35 @@ class Part(models.Model):
 
     def __str__(self):
         return f"[{self.sku}] {self.brand.name} - {self.name}"
+
+
+class Order(models.Model):
+    part = models.ForeignKey(
+        Part,
+        on_delete=models.PROTECT,
+        related_name='orders',
+        verbose_name="Запчасть"
+    )
+    client_name = models.CharField(max_length=100, verbose_name="Имя клиента")
+    client_phone = models.CharField(max_length=20, verbose_name="Телефон клиента")
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ('new', 'Новый'),
+            ('processing', 'В обработке'),
+            ('done', 'Выполнен')
+        ],
+        default='new',
+        verbose_name="Статус заказа"
+    )
+    comment = models.TextField(blank=True, verbose_name="Комментарий")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания заказа")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления заказа")
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Заказ"
+        verbose_name_plural = "Заказы"
+
+    def __str__(self):
+        return f"Заказ №{self.id} — {self.client_name} ({self.part.name})"
