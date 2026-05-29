@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import CarModel, Brand, Part
-
+from .models import CarModel, Brand, Part, Order
 
 @admin.register(CarModel)
 class CarModelAdmin(admin.ModelAdmin):
@@ -8,12 +7,10 @@ class CarModelAdmin(admin.ModelAdmin):
     list_filter = ['brand']
     search_fields = ['brand', 'name']
 
-
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
     list_display = ['name', 'country']
     search_fields = ['name']
-
 
 @admin.register(Part)
 class PartAdmin(admin.ModelAdmin):
@@ -54,3 +51,10 @@ class PartAdmin(admin.ModelAdmin):
             },
         ),
     ]
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ['id', 'part', 'client_name', 'client_phone', 'status', 'created_at']
+    list_filter = ['status', 'created_at']
+    search_fields = ['client_name', 'client_phone', 'part__name']
+    readonly_fields = ['created_at', 'updated_at']
