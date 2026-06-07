@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ part.name }} — Auto-VID{% endblock %}
+
+{% block content %}
+    <p><a href="{% url 'catalog:catalog' %}">&larr; Назад в каталог</a></p>
+
+    <h1>{{ part.name }}</h1>
+
+    <ul>
+        <li><strong>Артикул:</strong> {{ part.sku }}</li>
+        <li><strong>Бренд:</strong> {{ part.brand }}</li>
+        <li><strong>Категория:</strong> {{ part.category }}</li>
+        <li><strong>Цена:</strong> {{ part.price }} ₽</li>
+        <li><strong>Наличие:</strong> {% if part.in_stock %}{{ part.in_stock }} шт.{% else %}нет в наличии{% endif %}</li>
+    </ul>
+
+    <p>{{ part.description }}</p>
+
+    <h2>Быстрый заказ</h2>
+    <form method="post" action="{% url 'catalog:quick_order' part.id %}">
+        {% csrf_token %}
+        <p>
+            <label>Имя:<br>
+                <input type="text" name="client_name" required>
+            </label>
+        </p>
+        <p>
+            <label>Телефон:<br>
+                <input type="text" name="client_phone" required>
+            </label>
+        </p>
+        <button type="submit">Заказать</button>
+    </form>
+{% endblock %}
