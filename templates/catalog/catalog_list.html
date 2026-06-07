@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Каталог запчастей — Auto-VID{% endblock %}
+
+{% block content %}
+    <h1>Каталог запчастей</h1>
+
+    <form method="get" action="{% url 'catalog:catalog' %}">
+        <input type="text" name="q" value="{{ query }}" placeholder="Артикул или название">
+        <select name="car">
+            <option value="">Все автомобили</option>
+            {% for car in cars %}
+                <option value="{{ car.id }}" {% if selected_car == car.id|stringformat:"s" %}selected{% endif %}>
+                    {{ car.brand }} {{ car.name }} ({{ car.generation }})
+                </option>
+            {% endfor %}
+        </select>
+        <button type="submit">Найти</button>
+    </form>
+
+    <table border="1" cellpadding="6">
+        <thead>
+            <tr>
+                <th>Артикул</th>
+                <th>Название</th>
+                <th>Бренд</th>
+                <th>Категория</th>
+                <th>Цена, ₽</th>
+                <th>Наличие</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for part in parts %}
+                <tr>
+                    <td>{{ part.sku }}</td>
+                    <td>{{ part.name }}</td>
+                    <td>{{ part.brand }}</td>
+                    <td>{{ part.category }}</td>
+                    <td>{{ part.price }}</td>
+                    <td>{% if part.in_stock %}{{ part.in_stock }} шт.{% else %}нет в наличии{% endif %}</td>
+                    <td><a href="{% url 'catalog:part_detail' part.id %}">Подробнее</a></td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="7">Ничего не найдено.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
